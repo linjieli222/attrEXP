@@ -60,7 +60,7 @@
 
 
 
-    htmlobj = $.ajax({
+  /*  htmlobj = $.ajax({
       url: "http://52.24.142.90/update_counter.php",
       async: false,
       method: "POST",
@@ -77,19 +77,20 @@
     });
     var outputCounter = htmlobj.responseText;
     console.log('Current counter: ' + outputCounter);
-    var counter = parseInt(outputCounter.split(' ')[3]);
+    var counter = parseInt(outputCounter.split(' ')[3]);*/
+    var counter = 2;
 
         //read a text file
     function readTextFile(file){
        htmlobj=$.ajax({url:file,async:false});
        var list = htmlobj.responseText;
        var listArray = list.split(/\n/g);
-       for (a in listArray ) {
-           listArray[a] = listArray[a].split(","); 
-           for( b in listArray[a]){
-             listArray[a][b] = 'http://52.24.142.90/images/img/' + listArray[a][b];
-           }
-       }
+       // for (a in listArray ) {
+       //     listArray[a] = listArray[a].split(","); 
+       //     for( b in listArray[a]){
+       //       listArray[a][b] = '/static/images/img/' + listArray[a][b];
+       //     }
+       // }
        listArray = listArray.slice(0,listArray.length-1);
        return listArray;
    }
@@ -97,7 +98,7 @@
     var post_trial_gap = function() {
       return Math.floor( Math.random() * 750 );
     }
-
+    // questionaire page
     var question_age = ["My age is"];
     var welcome_survey_new_block = {
       type: "survey_new",
@@ -107,11 +108,11 @@
    
     var face_images_explore_ready_block = {
       type: "text",
-      text: '<div> <h2 class="emp"> Face Similarities Test</h2> <hr> <div class="well"> <p>Welcome! </p> <div class="row"> <div class="col-md-12"> <p> In this task, you will see many pairs of faces, your task to <b>rate the similarity</b> between them. The figure below is an illustration of what you will see.</p> <img src="/static/images/faceExamples/trial1.png" style="width:100%" /> </div> </div> <p style="margin-bottom: 30px;">We will walk you through the task. </p> <p>First, we will show you some <span class="emp">face examples</span>.</p> <p>Next we will warm you up with a short <span class="emp">practice session </span>.</p> <p>Then you will be the judge of faces in our <span class="emp">real task</span>!</p> </div></div>',
+      text: '<div> <h2 class="emp"> Face Attractiveness Test</h2> <hr> <div class="well"> <p>Welcome! </p> <div class="row"> <div class="col-md-12"> <p> In this task, you will see many faces, your task to <b>rate the attractiveness</b> of them. The figure below is an illustration of what you will see.</p> <img src="/static/images/faceExamples/trial1.png" style="width:100%" /> </div> </div> <p style="margin-bottom: 30px;">We will walk you through the task. </p> <p>First, we will show you some <span class="emp">face examples</span>.</p> <p>Next we will warm you up with a short <span class="emp">practice session </span>.</p> <p>Then you will be the judge of faces in our <span class="emp">real task</span>!</p> </div></div>',
       timing_post_trial: post_trial_gap
     };
 
-    var face_images_explore_block4 = {
+    var face_images_explore_block1 = {
       type: "text",
       text: "<div class='im'><h3>Face Examples (1/3)</h3> <hr> <img src='/static/images/faceExamples/chicagoExp1.jpg' style='width:100%'/> <br></div> ",
       skip_button: true,
@@ -128,7 +129,7 @@
               },
       timing_post_trial: post_trial_gap
     };
-    var face_images_explore_block5 = {
+    var face_images_explore_block2 = {
       type: "text",
       text: "<div class='im'><h3>Face Examples (2/3)</h3> <hr> <img src='/static/images/faceExamples/chicagoExp3.jpg' style='width:100%'/> <br> </div> ",
       skip_button: true,
@@ -146,7 +147,7 @@
               },
       timing_post_trial: post_trial_gap
     };
-    var face_images_explore_block6 = {
+    var face_images_explore_block3 = {
       type: "text",
       text: "<div class='im'><h3>Face Examples (3/3)</h3> <hr> <img src='/static/images/faceExamples/chicagoExp5.jpg' style='width:100%'/> <br> </div> ",
       skip_button: true,
@@ -175,7 +176,7 @@
 
     var face_example_chunk = {
         chunk_type: 'while',
-        timeline: [face_images_explore_block4,face_images_explore_block5,face_images_explore_block6,face_images_explore_end_block],
+        timeline: [face_images_explore_block1,face_images_explore_block2,face_images_explore_block3,face_images_explore_end_block],
         continue_function: function(){
           var back_button = document.getElementById('Back').clicked;
             $('.well').remove();
@@ -188,70 +189,7 @@
             } 
         }
     };
-    var bad_examples_ready_block = {
-        type: "text",
-        text: '<div class="well"> <p>Good Job! </p> <p> Now you know what the task is.</p> <p> Remember to <span class="emp"> focus on the faces themselves </span> rather then the pose, expression and lighting condition of the faces.</p> <p> We will show you two examples of what you should pay attention to.</p><br></div>',
-        timing_post_trial: post_trial_gap
-      };
-    var bad_examples_block1 = {
-        type: "text",
-        text:"<div class = 'title'><h3>Focus on Faces rathar than Poses</h3> <hr> <div class='well'> <p>In Figure 1, you should choose the top and left faces even though the bottom two faces have similar poses. </p><p>In Figure 2, you should choose the top and right faces even though the two bottom faces have similar poses.</p> <br> <div class='row'> <div class='col-md-6'>  <img src='/static/images/bad_examples/f1bad.JPG' style='width:100%'/> <p>Figure 1</p></div> <div class='col-md-6'> <img src='/static/images/bad_examples/m1bad.JPG' style='width:100%'/><p>Figure 2</p> </div> </div></div></div>",
-        skip_button: true,
-        loop_num: 0,
-        on_finish: function(){
-                  if(this.loop_num++ > 0){
-                    var skip = document.getElementById('Skip').clicked;
-                    $('.well').remove();
-                    $('.title').remove();
-                    $('.jspsych-survey-text').remove();
-                    if(skip){
-                      jsPsych.endCurrentChunk();
-                    }
-                  }
-                  
-                },
-        timing_post_trial: post_trial_gap
-     };
-     var bad_examples_block2 = {
-       type: "text",
-       text:"<div class = 'title'><h3>Focus on Faces rather than Expressions</h3> <hr> <div class='well'> <p>In Figure 1, you should choose the two faces at the bottom even though the top and left faces have similar expressions. </p> <p>In Figure 2, you should choose the top face and the left face even though the two faces on the bottom are of similar expressions.</p> <br> <div class='row'> <div class='col-md-6'>  <img src='/static/images/bad_examples/f2bad.JPG' style='width:100%'/> <p>Figure 1</p></div> <div class='col-md-6'> <img src='/static/images/bad_examples/m2bad.JPG' style='width:100%'/><p>Figure 2</p> </div> </div></div></div>",
-        skip_button: true,
-        loop_num: 0,
-        on_finish: function(){
-                  if(this.loop_num++ > 0){
-                    var skip = document.getElementById('Skip').clicked;
-                    $('.well').remove();
-                    $('.title').remove();
-                    $('.jspsych-survey-text').remove();
-                    if(skip){
-                      jsPsych.endCurrentChunk();
-                    }
-                  }
-                  
-                },
-       timing_post_trial: post_trial_gap
-     }
-     var bad_examples_end_block = {
-      type: "text",
-      text: '<div class="well"> <p>If you wish to see the examples again, click  <span class="emp">Go Back</span>.</p> <p>Otherwise, click <span class="emp">Continue</span> to have some <span class="emp">warm up practices</span>. </p><br></div>',
-      back_button: true,
-      timing_post_trial: post_trial_gap
-    };
-    var bad_examples_chunk = {
-        chunk_type: 'while',
-        timeline: [bad_examples_block1,bad_examples_block2,bad_examples_end_block],
-        continue_function: function(){
-          var back_button = document.getElementById('Back').clicked;
-            $('.well').remove();
-            $('.jspsych-survey-text').remove();
-            if( back_button){
-              return true;
-            }
-            else{
-              return false;
-            } 
-        }
-    };
+
     var prac1_end_block = {
       type: "text",
       text: '<div class="well"> <p>If you wish to read the instructions again, click  <span class="emp">Go Back</span>.</p> <p>Otherwise, click <span class="emp">Continue</span> to start practice.</p><br></div>',
@@ -265,9 +203,19 @@
       timing_post_trial: post_trial_gap
     };
 
+    /* define test block and read in test images*/
+    var total_phase_num = 4;
+    var setNumber = counter;
+    // var repNumber = counter%5+1;
+    var prac_stim = readTextFile("https://raw.githubusercontent.com/amandasongmm/filesPublic/master/chicago_attr/HIT1.txt");
+
+    var stim_list = readTextFile('https://raw.githubusercontent.com/amandasongmm/filesPublic/master/chicago_attr/HIT'+ setNumber.toString()+'.txt');
+    var total_trial_num = stim_list.length*2;
+    // var prac_doublet_stim_f = readTextFile(stimuli_file_url);
+
     var test_ready_block = {
       type: "text",
-      text: "<div class='well'><br><p style='text-align: center; font-weight: bold; color: #3f6479; font-size: 24px;'> Great Job! :) </p><br><p>Great! You are ready to go!</p><p> You will be presented with around 200 trials separated in four phases. The task is the same. You will have a short break in the half way point.</p>  <p>Remember the most important rule: <strong style='color: #3f6479;'><em> Go with your gut and respond consistently!</em></strong></p> <p>When you're ready, press <b>Start Experiment</b> to begin. </p><br></div>",
+      text: "<div class='well'><br><p style='text-align: center; font-weight: bold; color: #3f6479; font-size: 24px;'> Great Job! :) </p><br><p>Great! You are ready to go!</p><p> You will be presented with around"  + total_trial_num.toString() + "trials separated in" + total_phase_num.toString() + "phases. The task is the same. You will have a short break in the half way point.</p>  <p>Remember the most important rule: <strong style='color: #3f6479;'><em> Go with your gut and respond consistently!</em></strong></p> <p>When you're ready, press <b>Start Experiment</b> to begin. </p><br></div>",
       cont: 'Start Experiment',
       timing_post_trial: post_trial_gap
     };
@@ -285,25 +233,15 @@
     };
 
 
-    /* define test block */
-    var setNumber = counter;
-    // var repNumber = counter%5+1;
-    var doublet_stim_f = readTextFile('https://raw.githubusercontent.com/amandasongmm/filesPublic/master/vicente_pair_jan/HIT'+ setNumber.toString()+'.txt');
-    var prac_doublet_stim_f = readTextFile("https://raw.githubusercontent.com/amandasongmm/filesPublic/master/vicente_pair_jan/HIT1.txt");
-
-    // var doublet_stim_f = readTextFile('https://raw.githubusercontent.com/amandasongmm/filesPublic/master/vicente_pair_jan/HIT'+ setNumber.toString()+'.txt');
-    // var prac_doublet_stim_f = readTextFile(stimuli_file_url);
-
-
     function getAllImages() {
       var images = []
-      images = images.concat(prac_doublet_stim_f);
-      images = images.concat(doublet_stim_f);
+      images = images.concat(prac_stim);
+      images = images.concat(stim_list);
       return images;
     }
     
-    var prac_doublet_stim = [prac_doublet_stim_f[0]];
-    var prac_no_inst_doublet_stim = prac_doublet_stim_f.slice(2,4);
+    var prac_stim = [prac_stim[0]];
+    var prac_no_inst_stim = prac_stim.slice(2,4);
 
 
     function getRandomInt (min, max) {
@@ -311,53 +249,59 @@
     }
 
     //catchy question
-    max = prac_doublet_stim_f.length;
-    var catchy_index = getRandomInt (1, max);
-    var doublet_catchy = []
-    var triplet_catchy = []
-    var doublet_stim = []
-    var triplet_stim = []
-    var temp = prac_doublet_stim_f[catchy_index];
-    temp.push(prac_doublet_stim_f[catchy_index+1][0]);
-    temp.push(prac_doublet_stim_f[catchy_index+1][1]);
-    max = prac_doublet_stim_f.length;
+    // max = prac_doublet_stim_f.length;
+    // var catchy_index = getRandomInt (1, max);
+    // var doublet_catchy = []
+    // var triplet_catchy = []
+    var stim = []
+    // var triplet_stim = []
+    // var temp = prac_doublet_stim_f[catchy_index];
+    // temp.push(prac_doublet_stim_f[catchy_index+1][0]);
+    // temp.push(prac_doublet_stim_f[catchy_index+1][1]);
+    // max = prac_doublet_stim_f.length;
+
+    // for ( var i = 0; i< 4; i++){
+    //   if (i < 2){
+    //     stim[i] = [].concat(stim_list.slice(i*50, i*50+50));
+    //   }
+    //   else{
+    //     stim[i] = [].concat(stim_list.slice((i-2)*50, (i-2)*50+50));;
+    //   }
+    //   // doublet_stim[i].push([temp[i],temp[i]]);
+    //   stim[i] = jsPsych.randomization.repeat(stim[i],1);
+    // }
 
     for ( var i = 0; i< 4; i++){
-      if (i < 2){
-        doublet_stim[i] = [].concat(doublet_stim_f.slice(i*50, i*50+50));
-      }
-      else{
-        doublet_stim[i] = [].concat(doublet_stim_f.slice((i-2)*50, (i-2)*50+50));;
-      }
-      doublet_stim[i].push([temp[i],temp[i]]);
-      doublet_stim[i] = jsPsych.randomization.repeat(doublet_stim[i],1);
+      
+      stim[i] = [].concat(stim_list.slice(i*50, i*50+50));
+      stim[i] = jsPsych.randomization.repeat(stim[i],1);
     }
-    var test_doublet1_stim = doublet_stim[0];
-    var test_doublet2_stim = doublet_stim[1];
-    var test_doublet3_stim = doublet_stim[2];
-    var test_doublet4_stim = doublet_stim[3];
+    var test1_stim = stim[0];
+    var test2_stim = stim[1];
+    var test3_stim = stim[2];
+    var test4_stim = stim[3];
 
 
-    // test_doublet1_stim = test_doublet1_stim.slice(0,2);
-    // test_doublet2_stim = test_doublet2_stim.slice(0,2);
-    // test_doublet3_stim = test_doublet3_stim.slice(0,2);
-    // test_doublet4_stim = test_doublet4_stim.slice(0,2);
+    test1_stim = test1_stim.slice(0,2);
+    test2_stim = test2_stim.slice(0,2);
+    test3_stim = test3_stim.slice(0,2);
+    test4_stim = test4_stim.slice(0,2);
 
 
     //practice with instruction blocks
     var trial_num = 0;
     var prac_doublet_block = {
-      type: 'similarity_custom',
-      stimuli: prac_doublet_stim,
-      text: '<div style="text-align: left; margin-top:30px;"> <p>In the <span class = "emp">Face Pair Task</span>, your need to rate how similar a face pair is from <span class="emp">1</span> to <span class="emp">9</sapn>.</p> <p><span class="emp">1</span> indicates <span class="emp">Maximally Dissimilar</span>, <span class="emp">9</span> indicates <span class="emp">Maximally Similar</span></p> <p> If you see two identical faces, please click the <span class="emp">identical</span> button.</p> <p> <em class="emp">Try to focus on the face features and ignore the pose, expression and lighting influence.</em></p></div><br><br>',
+      type: 'attr_custom',
+      stimuli: prac_stim,
+      text: '<div style="text-align: left; margin-top:30px;"> <p>In the <span class = "emp">Face Attractiveness Rating Task</span>, your need to rate how attractive  a face pair is from <span class="emp">1</span> to <span class="emp">9</sapn>.</p> <p><span class="emp">1</span> indicates <span class="emp">Maximally Unattractive</span>, <span class="emp">9</span> indicates <span class="emp">Maximally Attractive</span></p></div><br><br>',
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       set_num: 1
     };
     trial_num +=1;
-    var instruction_doublet_chunk = {
+    var instruction_chunk = {
         chunk_type: 'while',
-        timeline: [prac_doublet_block,prac1_end_block],
+        timeline: [prac_block,prac1_end_block],
         continue_function: function(){
           var back_button = document.getElementById('Back').clicked;
             $('.well').remove();
@@ -372,9 +316,9 @@
     };
    
     //practice with no instruction blocks
-    var prac_no_inst_doublet_block = {
-      type: 'similarity_custom',
-      stimuli: prac_no_inst_doublet_stim,
+    var prac_no_inst_block = {
+      type: 'attr_custom',
+      stimuli: prac_no_inst_stim,
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       set_num: 1
@@ -383,18 +327,18 @@
     trial_num +=1;
     phase_num  = 1;
 
-    var test_doublet1_block = {
-      type: 'similarity_custom',
-      stimuli: test_doublet1_stim,
+    var test1_block = {
+      type: 'attr_custom',
+      stimuli: test1_stim,
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
       set_num:setNumber
     };  
     phase_num +=1;
-    var test_doublet2_block = {
-      type: 'similarity_custom',
-      stimuli: test_doublet2_stim,
+    var test2_block = {
+      type: 'attr_custom',
+      stimuli: test2_stim,
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
@@ -402,18 +346,18 @@
     };
     phase_num +=1;
 
-    var test_doublet3_block = {
-      type: 'similarity_custom',
-      stimuli: test_doublet3_stim,
+    var test3_block = {
+      type: 'attr_custom',
+      stimuli: test3_stim,
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
       set_num:setNumber
     };
     phase_num +=1;
-    var test_doublet4_block = {
-      type: 'similarity_custom',
-      stimuli: test_doublet4_stim,
+    var test4_block = {
+      type: 'attr_custom',
+      stimuli: test4_stim,
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
@@ -422,7 +366,7 @@
     var trial_chunk = {
     chunk_type: 'linear',
 
-    timeline: [test_doublet1_block, test_doublet2_block,break2_block,test_doublet3_block,test_doublet4_block]
+    timeline: [test1_block, test2_block,break2_block,test3_block,test4_block]
     }
 
     /* create experiment definition array */
@@ -430,8 +374,8 @@
     var experiment = [];
     experiment.push(face_images_explore_ready_block);
     experiment.push(face_example_chunk);
-    experiment.push(instruction_doublet_chunk);
-    experiment.push(prac_no_inst_doublet_block);
+    experiment.push(instruction_chunk);
+    experiment.push(prac_no_inst_block);
     experiment.push(test_ready_block);
     experiment.push(trial_chunk);
     experiment.push(welcome_survey_new_block);
