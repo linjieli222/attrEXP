@@ -55,7 +55,7 @@
 		        trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
 		        display_element.html(trial.text);
 		        if (trial.phase.length >= 1){
-		          display_element.append('<div> <p> <span class="emp">Phase:</span> ' + trial.phase + ' of'+trial.totalPhase+'</p> <p><span class="emp">Progress:</span> '+trial.number +' of '+trial.total+'</p></div>');
+		          display_element.append('<div> <p> <span class="emp">Phase:</span> ' + trial.phase + ' of '+trial.totalPhase+'</p> <p><span class="emp">Progress:</span> '+trial.number +' of '+trial.total+'</p></div>');
 		        }
 		        
 		        // display stimulus
@@ -70,10 +70,7 @@
 						id: 'jspsych-single-stim-stimulus'
 					}));
 				}
-
-		        setTimeoutHandlers.push(setTimeout(function() {
-		          showSecondStim();
-		        }, 0));
+				show_response_slider(display_element, trial);
 		    }
 			
 		    function key_listener(){

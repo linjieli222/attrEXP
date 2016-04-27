@@ -10,9 +10,7 @@
         <script src="/static/js/myjspsych/jspsych.js" type="text/javascript"></script>
         <script src="/static/js/myjspsych/plugins/jspsych-text.js" type="text/javascript"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-        <script src="/static/js/myjspsych/plugins/jspsych-similarity.js" type="text/javascript"></script>
-        <script src="/static/js/myjspsych/plugins/jspsych-similarity-custom.js" type="text/javascript"></script>
-        <script src="/static/js/myjspsych/plugins/jspsych-custom-triplet.js" type="text/javascript"></script>
+        <script src="/static/js/myjspsych/plugins/jspsych-attr-custom.js" type="text/javascript"></script>
         <script src="/static/js/myjspsych/plugins/jspsych-text.js" type="text/javascript"></script>
         <script src="/static/js/myjspsych/plugins/jspsych-survey-select.js" type="text/javascript"></script>
         <script src="/static/js/myjspsych/plugins/jspsych-survey-text.js" type="text/javascript"></script>
@@ -85,12 +83,9 @@
        htmlobj=$.ajax({url:file,async:false});
        var list = htmlobj.responseText;
        var listArray = list.split(/\n/g);
-       // for (a in listArray ) {
-       //     listArray[a] = listArray[a].split(","); 
-       //     for( b in listArray[a]){
-       //       listArray[a][b] = '/static/images/img/' + listArray[a][b];
-       //     }
-       // }
+       for (a in listArray ) {
+           listArray[a] = '/static/images/img/' +listArray[a]; 
+       }
        listArray = listArray.slice(0,listArray.length-1);
        return listArray;
    }
@@ -260,16 +255,16 @@
     // temp.push(prac_doublet_stim_f[catchy_index+1][1]);
     // max = prac_doublet_stim_f.length;
 
-    // for ( var i = 0; i< 4; i++){
-    //   if (i < 2){
-    //     stim[i] = [].concat(stim_list.slice(i*50, i*50+50));
-    //   }
-    //   else{
-    //     stim[i] = [].concat(stim_list.slice((i-2)*50, (i-2)*50+50));;
-    //   }
-    //   // doublet_stim[i].push([temp[i],temp[i]]);
-    //   stim[i] = jsPsych.randomization.repeat(stim[i],1);
-    // }
+    /*for ( var i = 0; i< 4; i++){
+      if (i < 2){
+        stim[i] = [].concat(stim_list.slice(i*50, i*50+50));
+      }
+      else{
+        stim[i] = [].concat(stim_list.slice((i-2)*50, (i-2)*50+50));;
+      }
+      // doublet_stim[i].push([temp[i],temp[i]]);
+      stim[i] = jsPsych.randomization.repeat(stim[i],1);
+    }*/
 
     for ( var i = 0; i< 4; i++){
       
@@ -290,7 +285,7 @@
 
     //practice with instruction blocks
     var trial_num = 0;
-    var prac_doublet_block = {
+    var prac_block = {
       type: 'attr_custom',
       stimuli: prac_stim,
       text: '<div style="text-align: left; margin-top:30px;"> <p>In the <span class = "emp">Face Attractiveness Rating Task</span>, your need to rate how attractive  a face pair is from <span class="emp">1</span> to <span class="emp">9</sapn>.</p> <p><span class="emp">1</span> indicates <span class="emp">Maximally Unattractive</span>, <span class="emp">9</span> indicates <span class="emp">Maximally Attractive</span></p></div><br><br>',
@@ -333,7 +328,8 @@
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
-      set_num:setNumber
+      set_num:setNumber,
+      totalPhase: total_phase_num
     };  
     phase_num +=1;
     var test2_block = {
@@ -342,7 +338,8 @@
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
-      set_num:setNumber
+      set_num:setNumber,
+      totalPhase: total_phase_num
     };
     phase_num +=1;
 
@@ -352,7 +349,8 @@
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
-      set_num:setNumber
+      set_num:setNumber,
+      totalPhase: total_phase_num
     };
     phase_num +=1;
     var test4_block = {
@@ -361,7 +359,8 @@
       timing_post_trial: post_trial_gap,
       trial_num: trial_num,
       phase: phase_num,
-      set_num:setNumber
+      set_num:setNumber,
+      totalPhase: total_phase_num
     };
     var trial_chunk = {
     chunk_type: 'linear',
@@ -372,8 +371,8 @@
     /* create experiment definition array */
 
     var experiment = [];
-    experiment.push(face_images_explore_ready_block);
-    experiment.push(face_example_chunk);
+    // experiment.push(face_images_explore_ready_block);
+    // experiment.push(face_example_chunk);
     experiment.push(instruction_chunk);
     experiment.push(prac_no_inst_block);
     experiment.push(test_ready_block);
